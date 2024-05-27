@@ -1,0 +1,14 @@
+<input
+  [type]="type()"
+  [ngClass]="ngClass()"
+  [placeholder]="placeholder()"
+  (input)="onChangeInput($event)"
+  [name]="name()"
+  [formControl]="control"
+/>
+
+@if (control.invalid && control.touched && control.errors) {
+  <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+    <ng-content select="errorMessages"></ng-content>
+  </p>
+}

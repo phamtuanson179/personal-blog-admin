@@ -1,0 +1,8 @@
+<select
+  [ngClass]="ngClass()"
+  (input)="onChangeInput($event)"
+  [name]="name()"
+  [formControl]="control"
+>
+  <ng-content></ng-content>
+</select>
