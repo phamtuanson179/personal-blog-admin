@@ -1,0 +1,46 @@
+<div
+  class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+>
+  <h5
+    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+  >
+    Quản lý Danh mục
+  </h5>
+
+  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+    Danh mục là phân loại chính của một Blog và ảnh hướng đến việc điều hướng
+    của trang Blog
+  </p>
+
+  <div class="relative overflow-x-auto">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">Tên</th>
+          <th scope="col" class="px-6 py-3">Mô tả</th>
+          <th scope="col" class="px-6 py-3">Thứ tự</th>
+          <th scope="col" class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of categories$ | async; track $index) {
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              {{ category.name }}
+            </th>
+            <td class="px-6 py-4">{{ category.description }}</td>
+            <td class="px-6 py-4">{{ category.order }}</td>
+            <td class="px-6 py-4">$2999</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
