@@ -1,7 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { NzCardModule } from "ng-zorro-antd/card";
+import { NzTableModule } from "ng-zorro-antd/table";
 import { AppState } from "src/app/app.store";
+import { CategoriesCreateComponent } from "src/app/features/categories/components/categories-create/categories-create.component";
 import {
   selectCategoriesCategories,
   selectCategoriesLoading,
@@ -10,7 +13,12 @@ import {
 @Component({
   selector: "app-categories-table-view",
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NzCardModule,
+    NzTableModule,
+    CategoriesCreateComponent,
+  ],
   templateUrl: "./categories-table-view.component.html",
   styleUrl: "./categories-table-view.component.scss",
 })

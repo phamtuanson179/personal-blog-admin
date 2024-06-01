@@ -1,1 +1,51 @@
-<p>categories-create works!</p>
+<button
+  nz-button
+  class="bg-success text-white rounded hover:bg-success-light hover:text-white hover:border-none"
+  [nzType]="null"
+  (click)="isVisible_.set(true)"
+>
+  <span nz-icon nzType="plus" nzTheme="outline"></span>
+</button>
+
+<nz-modal
+  [nzVisible]="isVisible_()"
+  (nzVisibleChange)="isVisible_.set(false)"
+  nzTitle="Thêm mới danh mục"
+  (nzOnCancel)="form.reset(); isVisible_.set(false)"
+  [nzOkDanger]="true"
+  (nzOnOk)="create()"
+>
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" (ngSubmit)="create()" nz-form>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Tên</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input nz-input formControlName="name" placeholder="Ex: Frontend" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7">Mô tả</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input
+            nz-input
+            formControlName="description"
+            placeholder="Ex: Đây là ..."
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Thứ tự</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input
+            nz-input
+            formControlName="order"
+            placeholder="Ex: 0"
+            type="number"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("tailwindcss/colors");
+
 module.exports = {
-  content: ["./src/**/*.{html,js}", "./node_modules/flowbite/**/*.js"],
+  content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
       colors: {
@@ -16,6 +18,10 @@ module.exports = {
           800: "#1e40af",
           900: "#1e3a8a",
           950: "#172554",
+        },
+        success: {
+          light: colors.green["600"],
+          DEFAULT: colors.green["700"],
         },
       },
     },
@@ -56,5 +62,4 @@ module.exports = {
       ],
     },
   },
-  plugins: [require("flowbite/plugin")],
 };

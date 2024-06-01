@@ -29,6 +29,10 @@ export const categoriesReducer = createReducer(
     })
   ),
   on(
+    CategoriesAction["[Categories]CreateCategory"],
+    (state, { categoryCreate }) => ({ ...state })
+  ),
+  on(
     CategoriesAction["[Categories]LoadCategoriesSuccess"],
     (state, { categories }) => ({
       ...state,
@@ -37,10 +41,6 @@ export const categoriesReducer = createReducer(
       categories,
     })
   ),
-  on(CategoriesAction["[Categories]CreateCategory"], (state, { category }) => ({
-    ...state,
-    categories: [...state.categories, category],
-  })),
   on(
     CategoriesAction["[Categories]UpdateCategory"],
     (state, { categoryId, category }) => ({

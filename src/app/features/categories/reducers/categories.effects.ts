@@ -1,16 +1,17 @@
 import { inject, Injectable } from "@angular/core";
+import { CategoryCreate } from "@categories/interfaces/category-create.interface";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, mergeMap, of } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { CategoriesApiService } from "../../../apis/categories-api.service";
 import { CategoriesAction } from "./categories.actions";
 
 @Injectable()
 export class CategoriesEffects {
   private _categoriesApi = inject(CategoriesApiService);
-  private _actions = inject(Actions);
+  private _actions$ = inject(Actions);
 
   loadCategories$ = createEffect(() =>
-    this._actions.pipe(
+    this._actions$.pipe(
       ofType(CategoriesAction["[Categories]LoadCategories"]),
       mergeMap(() => this._categoriesApi.getCategories()),
       map((res) => res.data),
@@ -26,6 +27,18 @@ export class CategoriesEffects {
           })
         )
       )
+    )
+  );
+
+  createCategory$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(CategoriesAction["[Categories]CreateCategory"]),
+      mergeMap((action) =>
+        this._categoriesApi.createCategory({ data: action.categoryCreate })
+      ),
+      tap(() => {
+        return CategoriesAction["[Categories]LoadCategories"];
+      })
     )
   );
 }

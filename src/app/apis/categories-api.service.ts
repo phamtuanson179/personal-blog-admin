@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Category } from "../features/categories/interfaces/category.interface";
 import { Observable } from "rxjs";
+import { CategoryCreate } from "@categories/interfaces/category-create.interface";
 
 @Injectable({ providedIn: "root" })
 export class CategoriesApiService {
@@ -15,15 +16,25 @@ export class CategoriesApiService {
     return this._http.get(`/api/categories/${categoryId}`);
   }
 
-  createCategory(body: { data: Category }) {
-    return this._http.post(`/api/categories`, body);
+  createCategory(body: {
+    data: CategoryCreate;
+  }): Observable<{ data: Category }> {
+    return this._http.post<{ data: Category }>(`/api/categories`, body);
   }
 
-  updateCategory(categoryId: string, body: { data: Category }) {
-    return this._http.put(`/api/categories/${categoryId}`, body);
+  updateCategory(
+    categoryId: string,
+    body: { data: Category }
+  ): Observable<{ data: Category }> {
+    return this._http.put<{ data: Category }>(
+      `/api/categories/${categoryId}`,
+      body
+    );
   }
 
-  deleteCategory(categoryId: string) {
-    return this._http.delete(`/api/categories/${categoryId}`);
+  deleteCategory(categoryId: string): Observable<{ data: Category }> {
+    return this._http.delete<{ data: Category }>(
+      `/api/categories/${categoryId}`
+    );
   }
 }

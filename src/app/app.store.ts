@@ -6,7 +6,7 @@ import {
 } from "./features/categories/reducers/categories.reducer";
 
 export interface AppState {
-  categoriesState: CategoriesState;
+  categories: CategoriesState;
 }
 
 export interface AppStore {

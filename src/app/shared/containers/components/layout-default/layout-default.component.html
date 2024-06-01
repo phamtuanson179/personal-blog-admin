@@ -1,0 +1,42 @@
+<nz-layout>
+  <nz-sider
+    nzCollapsible
+    [nzCollapsed]="isSidebarCollapsed_()"
+    (nzCollapsedChange)="toggleSidebarCollapsed()"
+    [nzTrigger]="null"
+  >
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item>
+        <a [routerLink]="['/categories']">
+          <span nz-icon nzType="file"></span>
+          <span>Quản lý danh mục</span>
+        </a>
+      </li>
+
+      <li nz-menu-item>
+        <span nz-icon nzType="file"></span>
+        <span>Quản lý tags</span>
+      </li>
+
+      <li nz-menu-item>
+        <span nz-icon nzType="file"></span>
+        <span>Quản lý blogs</span>
+      </li>
+    </ul>
+  </nz-sider>
+
+  <nz-layout>
+    <app-header></app-header>
+    <nz-content>
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>User</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <div appFooter></div>
+  </nz-layout>
+</nz-layout>

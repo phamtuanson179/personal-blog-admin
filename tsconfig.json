@@ -24,7 +24,9 @@
     "paths": {
       "@environments/*": ["src/environments/*"],
       "@utils/*": ["src/app/shared/utils/*"],
-      "@interceptors/*": ["src/app/core/interceptors/*"]
+      "@interceptors/*": ["src/app/core/interceptors/*"],
+      "@containers/*": ["src/app/shared/containers/*"],
+      "@categories/*": ["src/app/features/categories/*"]
     }
   },
   "angularCompilerOptions": {
