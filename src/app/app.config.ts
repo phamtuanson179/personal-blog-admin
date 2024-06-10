@@ -41,16 +41,7 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(en_US),
     provideAnimationsAsync(),
     provideFirebaseApp(() =>
-      initializeApp({
-        projectId: "personal-blog-4514d",
-        appId: "1:941708469331:web:15da3a1f7c42ed7dc792a6",
-        storageBucket: "personal-blog-4514d.appspot.com",
-        // locationId: "asia-southeast1",
-        apiKey: "AIzaSyBokecx-MEfRuRN9zXlsnQggT-TCXgcwn0",
-        authDomain: "personal-blog-4514d.firebaseapp.com",
-        messagingSenderId: "941708469331",
-        measurementId: "G-SLRR2SV47E",
-      })
+      initializeApp()
     ),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
