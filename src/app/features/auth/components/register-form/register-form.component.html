@@ -1,0 +1,33 @@
+<div>
+  <form nz-form [formGroup]="registerForm" (ngSubmit)="submit()">
+    <div class="flex flex-col gap-2">
+      <nz-form-item class="m-0">
+        <nz-form-control nzErrorTip="Please input your username!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="email"
+              placeholder="Ex: nguyenVanA@gmail.com"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="m-0">
+        <nz-form-control nzErrorTip="Please input your Password!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="******"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button nz-button class="btn btn-primary flex-1">Đăng kí</button>
+    </div>
+  </form>
+</div>

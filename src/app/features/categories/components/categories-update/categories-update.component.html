@@ -1,1 +1,51 @@
-<p>categories-update works!</p>
+<button
+  nz-button
+  class="bg-warning text-white rounded hover:bg-warning-light hover:text-white hover:border-none"
+  [nzType]="null"
+  (click)="isVisible_.set(true)"
+>
+  <span nz-icon nzType="edit" nzTheme="outline"></span>
+</button>
+
+<nz-modal
+  [nzVisible]="isVisible_()"
+  (nzVisibleChange)="isVisible_.set(false)"
+  nzTitle="Cập nhật danh mục"
+  (nzOnCancel)="form.reset(); isVisible_.set(false)"
+  [nzOkDanger]="true"
+  (nzOnOk)="update()"
+>
+  <ng-container *nzModalContent>
+    <form [formGroup]="form" (ngSubmit)="update()" nz-form>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Tên</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input nz-input formControlName="name" placeholder="Ex: Frontend" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7">Mô tả</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input
+            nz-input
+            formControlName="description"
+            placeholder="Ex: Đây là ..."
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Thứ tự</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input
+            nz-input
+            formControlName="order"
+            placeholder="Ex: 0"
+            type="number"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

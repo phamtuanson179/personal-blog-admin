@@ -19,9 +19,21 @@ module.exports = {
           900: "#1e3a8a",
           950: "#172554",
         },
+        info: {
+          light: colors.blue["600"],
+          DEFAULT: colors.blue["700"],
+        },
         success: {
           light: colors.green["600"],
           DEFAULT: colors.green["700"],
+        },
+        warning: {
+          light: colors.yellow["400"],
+          DEFAULT: colors.yellow["500"],
+        },
+        danger: {
+          light: colors.red["600"],
+          DEFAULT: colors.red["700"],
         },
       },
     },

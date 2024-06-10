@@ -4,3 +4,31 @@
 @tailwind utilities;
 
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
+
+.btn {
+  @apply py-1 px-2 text-center text-black  hover:text-white rounded-sm;
+}
+
+.btn-none {
+  @apply border hover:bg-primary-400 hover:text-white;
+}
+
+.btn-primary {
+  @apply bg-primary-500 hover:bg-primary-400 text-white;
+}
+
+.btn-danger {
+  @apply bg-danger hover:bg-danger-light text-white;
+}
+
+.btn-warning {
+  @apply bg-warning hover:bg-warning-light text-white;
+}
+
+.btn-info {
+  @apply bg-info hover:bg-info-light text-white;
+}
+
+.btn-success {
+  @apply bg-success hover:bg-success-light text-white;
+}

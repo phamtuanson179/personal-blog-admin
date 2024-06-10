@@ -15,7 +15,15 @@
           <td>{{ category?.description }}</td>
           <td>{{ category.order }}</td>
           <td>
-            <a>Delete</a>
+            <div class="flex gap-2">
+              <app-categories-update
+                [updatedElm]="category"
+              ></app-categories-update>
+
+              <app-categories-delete
+                [delElm]="category"
+              ></app-categories-delete>
+            </div>
           </td>
         </tr>
       }

@@ -1,8 +1,12 @@
-<nz-header>
+<nz-header class="flex justify-between items-center">
   <button
     class="trigger"
     nz-icon
     [nzType]="isSidebarCollapsed_() ? 'menu-unfold' : 'menu-fold'"
     (click)="toggleSidebarCollapsed()"
   ></button>
+
+  <button class="trigger" nz-icon (click)="logout()">
+    <span nz-icon nzType="logout" nzTheme="outline"></span>
+  </button>
 </nz-header>

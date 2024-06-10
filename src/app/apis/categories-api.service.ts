@@ -1,40 +1,45 @@
-import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Category } from "../features/categories/interfaces/category.interface";
-import { Observable } from "rxjs";
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  DocumentReference,
+  Firestore,
+  updateDoc
+} from "@angular/fire/firestore";
 import { CategoryCreate } from "@categories/interfaces/category-create.interface";
+import { CategoryUpdate } from "@categories/interfaces/category-update.interface";
+import { from, Observable, tap } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class CategoriesApiService {
-  private _http = inject(HttpClient);
+  private _fireStore = inject(Firestore);
+  private _categoriesCollection = collection(this._fireStore, "categories");
 
-  getCategories(): Observable<{ data: Category[] }> {
-    return this._http.get<{ data: Category[] }>("/api/categories");
+  getCategories(): Observable<any> {
+    return collectionData(this._categoriesCollection, { idField: "id" }).pipe(
+      tap((res) => {
+        console.log("categories", res);
+      })
+    );
   }
 
   getCategoryById(categoryId: string) {
-    return this._http.get(`/api/categories/${categoryId}`);
+    return collectionData(this._categoriesCollection, {
+      idField: categoryId,
+    });
   }
 
-  createCategory(body: {
-    data: CategoryCreate;
-  }): Observable<{ data: Category }> {
-    return this._http.post<{ data: Category }>(`/api/categories`, body);
+  createCategory(body: CategoryCreate) {
+    return from(addDoc(this._categoriesCollection, body));
   }
 
-  updateCategory(
-    categoryId: string,
-    body: { data: Category }
-  ): Observable<{ data: Category }> {
-    return this._http.put<{ data: Category }>(
-      `/api/categories/${categoryId}`,
-      body
-    );
+  updateCategory(doc: DocumentReference, body: CategoryUpdate) {
+    return from(updateDoc(doc, body));
   }
 
-  deleteCategory(categoryId: string): Observable<{ data: Category }> {
-    return this._http.delete<{ data: Category }>(
-      `/api/categories/${categoryId}`
-    );
+  deleteCategory(doc: DocumentReference) {
+    return from(deleteDoc(doc));
   }
 }

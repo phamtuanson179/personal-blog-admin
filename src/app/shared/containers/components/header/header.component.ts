@@ -1,5 +1,6 @@
 import { Component, computed, inject } from "@angular/core";
 import { LayoutService } from "@containers/services/layout.service";
+import { AuthService } from "@shared-services/auth.service";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzHeaderComponent } from "ng-zorro-antd/layout";
 
@@ -12,6 +13,7 @@ import { NzHeaderComponent } from "ng-zorro-antd/layout";
 })
 export class HeaderComponent {
   private _layoutService = inject(LayoutService);
+  private _authService = inject(AuthService);
 
   public isSidebarCollapsed_ = computed(() =>
     this._layoutService.isSidebarCollapsed_()
@@ -19,5 +21,9 @@ export class HeaderComponent {
 
   toggleSidebarCollapsed() {
     this._layoutService.toggleSidebarCollapsed();
+  }
+
+  logout() {
+    this._authService.logout();
   }
 }

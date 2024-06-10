@@ -25,4 +25,23 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: "auth",
+    children: [
+      {
+        path: "login",
+        loadComponent: () =>
+          import("./pages/page-auth-login/page-auth-login.component").then(
+            (c) => c.PageAuthLoginComponent
+          ),
+      },
+      {
+        path: "register",
+        loadComponent: () =>
+          import(
+            "./pages/page-auth-register/page-auth-register.component"
+          ).then((c) => c.PageAuthRegisterComponent),
+      },
+    ],
+  },
 ];

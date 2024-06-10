@@ -1,1 +1,9 @@
-<p>categories-delete works!</p>
+<div
+  nz-popconfirm
+  nzPopconfirmTitle="Bạn muốn xoá danh mục này?"
+  nzPopconfirmPlacement="bottom"
+  (nzOnConfirm)="confirm()"
+  class="btn btn-danger"
+>
+  <span nz-icon nzType="delete" nzTheme="outline"></span>
+</div>

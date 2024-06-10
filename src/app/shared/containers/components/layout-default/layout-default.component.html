@@ -7,22 +7,26 @@
   >
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
-      <li nz-menu-item>
-        <a [routerLink]="['/categories']">
+      <a [routerLink]="['/categories']" [routerLinkActive]="'is-active'">
+        <li nz-menu-item>
           <span nz-icon nzType="file"></span>
           <span>Quản lý danh mục</span>
-        </a>
-      </li>
+        </li>
+      </a>
 
-      <li nz-menu-item>
-        <span nz-icon nzType="file"></span>
-        <span>Quản lý tags</span>
-      </li>
+      <a [routerLink]="['/categories']" [routerLinkActive]="'is-active'">
+        <li nz-menu-item>
+          <span nz-icon nzType="file"></span>
+          <span>Quản lý tags</span>
+        </li>
+      </a>
 
-      <li nz-menu-item>
-        <span nz-icon nzType="file"></span>
-        <span>Quản lý blogs</span>
-      </li>
+      <!-- <a [routerLink]="['/categories']" [routerLinkActive]="'is-active'">
+        <li nz-menu-item>
+          <span nz-icon nzType="file"></span>
+          <span>Quản lý blogs</span>
+        </li>
+      </a> -->
     </ul>
   </nz-sider>
 

@@ -1,0 +1,47 @@
+<div>
+  <form nz-form [formGroup]="loginForm" id="loginForm" (ngSubmit)="login()">
+    <div class="flex flex-col gap-2">
+      <nz-form-item class="m-0">
+        <nz-form-control nzErrorTip="Please input your username!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="email"
+              placeholder="Ex: nguyenVanA@gmail.com"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="m-0">
+        <nz-form-control nzErrorTip="Please input your Password!">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              type="password"
+              nz-input
+              formControlName="password"
+              placeholder="******"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        nz-button
+        class="btn btn-primary flex-1"
+        type="submit"
+        form="loginForm"
+      >
+        Đăng nhập
+      </button>
+
+      <div class="flex gap-2">
+        <button class="btn btn-none">Quên mật khẩu</button>
+        <a class="flex-1" [routerLink]="['/auth', 'register']">
+          <button class="btn btn-warning w-full">Đăng kí</button>
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
