@@ -46,12 +46,20 @@ export class CategoriesCreateComponent {
   constructor() {}
 
   create() {
+    const currentUserUid = this._authService.getCurrentUserUid() ?? "";
+    const nowTimestamp = new Date().getTime();
+
     const body: CategoryCreate = {
       ...this.form.getRawValue(),
-      createdBy: this._authService.getCurrentUserUid(),
+      createdBy: currentUserUid,
+      updatedBy: currentUserUid,
+      createdTime: nowTimestamp,
+      updatedTime: nowTimestamp,
     };
-    this._categoriesFacade
-      .createCategory(body)
-      .subscribe((res) => this.isVisible_.set(false));
+
+    this._categoriesFacade.createCategory(body).subscribe(() => {
+      this.form.reset();
+      this.isVisible_.set(false);
+    });
   }
 }

@@ -1,0 +1,96 @@
+<nz-card nzTitle="Thêm mới blog">
+  <form nz-form [formGroup]="form" (ngSubmit)="create()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">
+        Tiêu đề
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Bắt buộc nhập!">
+        <input
+          nz-input
+          formControlName="title"
+          id="title"
+          placeholder="Ex: Angular hoạt động như thế nào?"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="summary" nzRequired>
+        Tóm tắt
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <textarea
+          rows="4"
+          nz-input
+          formControlName="summary"
+          placeholder="Ex: Angular hoạt động như thế này"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="categoryIds" nzRequired>
+        Danh mục
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-select
+          nzMode="multiple"
+          nzPlaceHolder="Ex: Frontend"
+          formControlName="categoryIds"
+        >
+          <nz-option
+            *ngFor="let category of (categories$ | async)"
+            [nzLabel]="category.name"
+            [nzValue]="category.id"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="thumbnail" nzRequired>
+        Thumbnail
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-upload
+          nzType="drag"
+          [nzMultiple]="true"
+          (nzChange)="handleChangeThumbnail($event)"
+          [nzData]="form.value.thumbnail"
+        >
+          <p class="ant-upload-drag-icon">
+            <span nz-icon nzType="inbox"></span>
+          </p>
+          <p class="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+          <p class="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibit from
+            uploading company data or other band files
+          </p>
+        </nz-upload>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label
+        [nzSm]="6"
+        [nzXs]="24"
+        nzFor="content"
+        nzRequired
+        nzTooltipTitle="What do you want other to call you"
+      >
+        <span>Nội dung</span>
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <ckeditor [editor]="editor" formControlName="content"></ckeditor>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button class="btn btn-primary">Lưu</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-card>

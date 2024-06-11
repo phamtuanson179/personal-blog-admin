@@ -3,6 +3,8 @@ export interface Category {
   name: string;
   description?: string;
   order: number;
-  createdBy?: string;
-  updatedBy?: string;
+  createdBy: string;
+  createdTime: number;
+  updatedBy: string;
+  updatedTime: number;
 }

@@ -3,14 +3,15 @@ import {
   addDoc,
   collection,
   collectionData,
+  collectionSnapshots,
   deleteDoc,
   DocumentReference,
   Firestore,
-  updateDoc
+  updateDoc,
 } from "@angular/fire/firestore";
 import { CategoryCreate } from "@categories/interfaces/category-create.interface";
 import { CategoryUpdate } from "@categories/interfaces/category-update.interface";
-import { from, Observable, tap } from "rxjs";
+import { from, map, Observable, tap } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class CategoriesApiService {

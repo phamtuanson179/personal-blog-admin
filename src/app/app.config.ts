@@ -29,6 +29,7 @@ import { addJwtInterceptor } from "@interceptors/add-jwt.interceptor";
 import { en_US, provideNzI18n } from "ng-zorro-antd/i18n";
 import { routes } from "./app.routes";
 import { provideNzIcons } from "./icons-provider";
+import { environment } from "@environments/environment";
 
 registerLocaleData(vi);
 
@@ -40,9 +41,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideNzI18n(en_US),
     provideAnimationsAsync(),
-    provideFirebaseApp(() =>
-      initializeApp()
-    ),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     ScreenTrackingService,
@@ -55,5 +54,6 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideRemoteConfig(() => getRemoteConfig()),
     provideVertexAI(() => getVertexAI()),
+    
   ],
 };

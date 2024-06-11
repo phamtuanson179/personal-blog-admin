@@ -56,10 +56,14 @@ export class CategoriesUpdateComponent {
     const body: CategoryUpdate = {
       ...this.form.getRawValue(),
       updatedBy: this._authService.getCurrentUserUid(),
+      updatedTime: new Date().getTime(),
     };
 
     this._categoriesFacade
       .updateCategory(this.updatedElm_()?.id, body)
-      .subscribe(() => this.isVisible_.set(false));
+      .subscribe(() => {
+        this.form.reset();
+        this.isVisible_.set(false);
+      });
   }
 }

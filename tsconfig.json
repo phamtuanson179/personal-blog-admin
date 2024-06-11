@@ -21,12 +21,14 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
+    "allowJs": true,
     "paths": {
       "@environments/*": ["src/environments/*"],
       "@shared-utils/*": ["src/app/shared/utils/*"],
       "@interceptors/*": ["src/app/core/interceptors/*"],
       "@containers/*": ["src/app/shared/containers/*"],
       "@categories/*": ["src/app/features/categories/*"],
+      "@blogs/*": ["src/app/features/blogs/*"],
       "@shared-services/*": ["src/app/shared/services/*"]
     }
   },

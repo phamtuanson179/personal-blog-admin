@@ -1,5 +1,5 @@
 <nz-card nzTitle="Quản lý danh mục" [nzExtra]="extraRef">
-  <nz-table #tableRef [nzData]="(categories$ | async) ?? []">
+  <nz-table #tableRef [nzData]="categories_() ?? []">
     <thead>
       <tr>
         <th id="name">Tên</th>

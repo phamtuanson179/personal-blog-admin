@@ -1,0 +1,37 @@
+<nz-card nzTitle="Quản lý blog" [nzExtra]="extraRef">
+  <nz-table #tableRef [nzData]="blogs_() ?? []">
+    <thead>
+      <tr>
+        <th id="title">Tiêu đề</th>
+        <th id="thumnail">Thumbnail</th>
+        <th id="summary">Summary</th>
+        <th id="createdBy">Người viết</th>
+        <th id="updateTime">Thời gian cập nhật</th>
+        <th id="action"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (blog of tableRef.data; track $index) {
+        <tr>
+          <td>{{ blog.title }}</td>
+          <td>{{ blog?.thumbnail }}</td>
+          <td>{{ blog.summary }}</td>
+          <td>{{ blog.updateTime }}</td>
+          <td>
+            <div class="flex gap-2">
+              <!-- <app-blogs-update
+                [updatedElm]="blog"
+              ></app-blogs-update>
+
+              <app-blogs-delete [delElm]="blog"></app-blogs-delete> -->
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #extraRef>
+  <!-- <app-categories-create></app-categories-create> -->
+</ng-template>
