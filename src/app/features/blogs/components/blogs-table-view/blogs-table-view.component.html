@@ -14,7 +14,7 @@
       @for (blog of tableRef.data; track $index) {
         <tr>
           <td>{{ blog.title }}</td>
-          <td>{{ blog?.thumbnail }}</td>
+          <td>{{ blog?.thumbnailFileId }}</td>
           <td>{{ blog.summary }}</td>
           <td>{{ blog.updateTime }}</td>
           <td>
@@ -33,5 +33,12 @@
 </nz-card>
 
 <ng-template #extraRef>
-  <!-- <app-categories-create></app-categories-create> -->
+  <a [routerLink]="['create']">
+    <button
+      nz-button
+      class="bg-success text-white rounded hover:bg-success-light hover:text-white hover:border-none"
+    >
+      <span nz-icon nzType="plus" nzTheme="outline"></span>
+    </button>
+  </a>
 </ng-template>

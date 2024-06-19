@@ -1,5 +1,10 @@
 <nz-card nzTitle="Thêm mới blog">
-  <form nz-form [formGroup]="form" (ngSubmit)="create()">
+  <form
+    nz-form
+    [formGroup]="form"
+    id="blogForm"
+    (ngSubmit)="create()"
+  >
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">
         Tiêu đề
@@ -39,7 +44,7 @@
           formControlName="categoryIds"
         >
           <nz-option
-            *ngFor="let category of (categories$ | async)"
+            *ngFor="let category of categories$ | async"
             [nzLabel]="category.name"
             [nzValue]="category.id"
           ></nz-option>
@@ -53,21 +58,16 @@
       </nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <nz-upload
-          nzType="drag"
-          [nzMultiple]="true"
+          [nzMultiple]="false"
           (nzChange)="handleChangeThumbnail($event)"
-          [nzData]="form.value.thumbnail"
+          [nzBeforeUpload]="validateThumbnail"
+          [nzFileList]="form.controls['thumbnails'].value"
+          class="flex items-center gap-4"
         >
-          <p class="ant-upload-drag-icon">
-            <span nz-icon nzType="inbox"></span>
-          </p>
-          <p class="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p class="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibit from
-            uploading company data or other band files
-          </p>
+          <button nz-button class="btn btn-info">
+            <span nz-icon nzType="upload"></span>
+            Tải ảnh
+          </button>
         </nz-upload>
       </nz-form-control>
     </nz-form-item>
@@ -83,13 +83,15 @@
         <span>Nội dung</span>
       </nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <ckeditor [editor]="editor" formControlName="content"></ckeditor>
+        <ckeditor id="editor" [editor]="editor" formControlName="content"></ckeditor>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item nz-row class="register-area">
       <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button class="btn btn-primary">Lưu</button>
+        <button type="submit" form="blogForm" class="btn btn-primary">
+          Lưu
+        </button>
       </nz-form-control>
     </nz-form-item>
   </form>

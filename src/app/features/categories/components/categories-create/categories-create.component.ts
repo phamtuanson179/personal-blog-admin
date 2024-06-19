@@ -57,7 +57,7 @@ export class CategoriesCreateComponent {
       updatedTime: nowTimestamp,
     };
 
-    this._categoriesFacade.createCategory(body).subscribe(() => {
+    this._categoriesFacade.createCategory(body).subscribe((res) => {
       this.form.reset();
       this.isVisible_.set(false);
     });
