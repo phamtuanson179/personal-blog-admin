@@ -26,7 +26,6 @@
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-core": "^41.4.2",
     "@ckeditor/ckeditor5-markdown-gfm": "^41.4.2",
-    "file-saver": "^2.0.5",
     "ng-zorro-antd": "^17.4.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

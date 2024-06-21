@@ -1,16 +1,24 @@
 import { CommonModule } from "@angular/common";
 import { AfterViewInit, Component, inject } from "@angular/core";
+import { FirebaseApp } from "@angular/fire/app";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadString
+} from "@angular/fire/storage";
 import {
   FormBuilder,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
+import { BlogCreate } from "@blogs/interfaces/blog-create.interface";
 import { BlogsFacadeService } from "@blogs/services/blogs-facade.service";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
-import { EditorConfig, Editor } from "@ckeditor/ckeditor5-core";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Markdown } from "@ckeditor/ckeditor5-markdown-gfm";
+import { Editor, EditorConfig } from "@ckeditor/ckeditor5-core";
+import { AuthService } from "@shared-services/auth.service";
 import { NzCardModule } from "ng-zorro-antd/card";
 import { NzFormModule } from "ng-zorro-antd/form";
 import { NzIconModule } from "ng-zorro-antd/icon";
@@ -19,19 +27,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzTagModule } from "ng-zorro-antd/tag";
 import { NzUploadFile, NzUploadModule } from "ng-zorro-antd/upload";
-import { saveAs } from "file-saver";
-import { writeFile } from "fs";
-import {
-  getStorage,
-  ref,
-  Storage,
-  uploadBytes,
-  uploadString,
-} from "@angular/fire/storage";
-import { FirebaseApp } from "@angular/fire/app";
-import { BlogCreate } from "@blogs/interfaces/blog-create.interface";
-import { AuthService } from "@shared-services/auth.service";
-import { combineLatest, from, mergeMap, of, switchMap } from "rxjs";
+import { combineLatest, from, mergeMap, of } from "rxjs";
 
 @Component({
   selector: "app-blogs-create",

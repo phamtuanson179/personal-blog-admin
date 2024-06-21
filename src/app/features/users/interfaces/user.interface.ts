@@ -1,4 +1,9 @@
 export interface User {
-  email: string;
-  password: string;
+  id: string;
+  authUid: string;
+  name?: string;
+  sex?: string;
+  dob?: string;
+  avatarFileId?: string;
+  description?: string;
 }

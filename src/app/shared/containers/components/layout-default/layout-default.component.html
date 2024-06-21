@@ -9,24 +9,24 @@
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <a [routerLink]="['/categories']" [routerLinkActive]="'is-active'">
         <li nz-menu-item>
-          <span nz-icon nzType="file"></span>
+          <span nz-icon nzType="folder"></span>
           <span>Quản lý danh mục</span>
         </li>
       </a>
 
       <a [routerLink]="['/blogs']" [routerLinkActive]="'is-active'">
         <li nz-menu-item>
-          <span nz-icon nzType="file"></span>
+          <span nz-icon nzType="form"></span>
           <span>Quản lý blogs</span>
         </li>
       </a>
 
-      <!-- <a [routerLink]="['/categories']" [routerLinkActive]="'is-active'">
+      <a [routerLink]="['/users']" [routerLinkActive]="'is-active'">
         <li nz-menu-item>
-          <span nz-icon nzType="file"></span>
-          <span>Quản lý blogs</span>
+          <span nz-icon nzType="user"></span>
+          <span>Quản lý người dùng</span>
         </li>
-      </a> -->
+      </a>
     </ul>
   </nz-sider>
 
@@ -37,7 +37,6 @@
       <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-content class="overflow-auto">
-      
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>

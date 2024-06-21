@@ -1,5 +1,9 @@
 import { Component, inject } from "@angular/core";
-import { Auth, createUserWithEmailAndPassword } from "@angular/fire/auth";
+import {
+  Auth,
+  UserCredential,
+  createUserWithEmailAndPassword,
+} from "@angular/fire/auth";
 import {
   FormBuilder,
   FormsModule,
@@ -10,7 +14,8 @@ import { Router } from "@angular/router";
 import { NzFormModule } from "ng-zorro-antd/form";
 import { NzInputModule } from "ng-zorro-antd/input";
 import { NzMessageService } from "ng-zorro-antd/message";
-import { from } from "rxjs";
+import { from, of, switchMap } from "rxjs";
+import { UsersFacadeService } from "src/app/features/users/services/user-facade.service";
 
 @Component({
   selector: "app-register-form",
@@ -24,6 +29,8 @@ export class RegisterFormComponent {
   private _router = inject(Router);
   private _fb = inject(FormBuilder);
   private _auth = inject(Auth);
+  private _usersFacade = inject(UsersFacadeService);
+
   registerForm = this._fb.group({
     email: this._fb.nonNullable.control("", [Validators.required]),
     password: this._fb.nonNullable.control("", [Validators.required]),
@@ -31,11 +38,19 @@ export class RegisterFormComponent {
 
   submit() {
     const body = this.registerForm.getRawValue();
-    from(
-      createUserWithEmailAndPassword(this._auth, body.email, body.password)
-    ).subscribe(() => {
-      this._message.success("Done");
-      this._router.navigate(["/auth", "login"]);
-    });
+    from(createUserWithEmailAndPassword(this._auth, body.email, body.password))
+      .pipe(
+        switchMap((res: UserCredential) => {
+          console.log(res);
+          
+          return res.operationType == "signIn"
+            ? this._usersFacade.createUser({ authUid: res.user.uid })
+            : of(null);
+        })
+      )
+      .subscribe(() => {
+        this._message.success("Done");
+        this._router.navigate(["/auth", "login"]);
+      });
   }
 }

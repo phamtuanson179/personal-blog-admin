@@ -29,6 +29,7 @@
       "@containers/*": ["src/app/shared/containers/*"],
       "@categories/*": ["src/app/features/categories/*"],
       "@blogs/*": ["src/app/features/blogs/*"],
+      "@users/*": ["src/app/features/users/*"],
       "@shared-services/*": ["src/app/shared/services/*"]
     }
   },

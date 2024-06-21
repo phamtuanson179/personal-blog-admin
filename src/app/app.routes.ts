@@ -1,5 +1,7 @@
 import { Routes } from "@angular/router";
 import { LayoutDefaultComponent } from "./shared/containers/components/layout-default/layout-default.component";
+import { isLoggedGuard } from "src/app/core/guards/is-logged.guard";
+import { isNotLoggedGuard } from "src/app/core/guards/is-not-logged.guard";
 
 export const routes: Routes = [
   {
@@ -9,6 +11,7 @@ export const routes: Routes = [
   },
   {
     path: "auth",
+    canActivate: [isNotLoggedGuard],
     children: [
       {
         path: "login",
@@ -29,6 +32,7 @@ export const routes: Routes = [
   {
     path: "",
     component: LayoutDefaultComponent,
+    canActivate: [isLoggedGuard],
     children: [
       {
         path: "categories",

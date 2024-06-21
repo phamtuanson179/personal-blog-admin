@@ -16,7 +16,8 @@
           <td>{{ blog.title }}</td>
           <td>{{ blog?.thumbnailFileId }}</td>
           <td>{{ blog.summary }}</td>
-          <td>{{ blog.updateTime }}</td>
+          <td>{{ blog.createdBy }}</td>
+          <td>{{ blog.updateTime | date: "hh:mm:ss dd/MM/yyyy" }}</td>
           <td>
             <div class="flex gap-2">
               <!-- <app-blogs-update
