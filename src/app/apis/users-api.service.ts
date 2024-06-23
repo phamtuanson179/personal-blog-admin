@@ -25,9 +25,9 @@ export class UsersApiService {
     );
   }
 
-  getUserById(blogId: string) {
+  getUserById(userId: string) {
     return collectionData(this._usersCollection, {
-      idField: blogId,
+      idField: userId,
     });
   }
 

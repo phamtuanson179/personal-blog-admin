@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   User,
   UserCredential,
+  getAdditionalUserInfo,
   signInWithPopup,
   signOut,
 } from "@angular/fire/auth";
@@ -24,6 +25,10 @@ export class AuthService {
   constructor() {
     this._auth.onAuthStateChanged((user) => {
       this._authInfo.set(user);
+      // if (user) {
+
+      // this._usersFacade.getUserById(user)
+      // }
     });
   }
 
@@ -38,10 +43,13 @@ export class AuthService {
       .pipe(
         take(1),
         switchMap((res: UserCredential) => {
-          console.log(res);
-
-          return res.operationType == "signIn"
-            ? this._usersFacade.createUser({ authUid: res.user.uid })
+          return getAdditionalUserInfo(res)?.isNewUser
+            ? this._usersFacade.createUser({
+                authUid: res.user.uid,
+                avatarFileId: res.user.photoURL ?? "",
+                name: res.user.displayName ?? "",
+                email: res.user.email ?? "",
+              })
             : of(null);
         }),
         tap(() => this._message.success("Đăng nhập thành công!")),

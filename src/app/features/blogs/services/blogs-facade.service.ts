@@ -1,27 +1,70 @@
+import { Location } from "@angular/common";
 import { Injectable, inject } from "@angular/core";
 import { Firestore, doc } from "@angular/fire/firestore";
+import { FormGroup } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
 import { BlogCreate } from "@blogs/interfaces/blog-create.interface";
 import { BlogUpdate } from "@blogs/interfaces/blog-update.interface";
-import { take } from "rxjs";
+import { Blog } from "@blogs/interfaces/blog.interface";
+import { NzMessageService } from "ng-zorro-antd/message";
+import { NzUploadFile } from "ng-zorro-antd/upload";
+import { combineLatest, map, mergeMap, of, take, tap } from "rxjs";
 import { BlogsApiService } from "src/app/apis/blogs-api.service";
 import { CategoriesApiService } from "src/app/apis/categories-api.service";
+import { StorageApiService } from "src/app/apis/storage-api.service";
 
 @Injectable({ providedIn: "root" })
 export class BlogsFacadeService {
   private _blogsApi = inject(BlogsApiService);
   private _categoriesApi = inject(CategoriesApiService);
+  private _storageApi = inject(StorageApiService);
   private _fs = inject(Firestore);
+  private _msg = inject(NzMessageService);
+  private _location = inject(Location);
+  private _dom = inject(DomSanitizer);
 
   public getBlogs() {
     return this._blogsApi.getBlogs();
   }
 
-  public getCategryById(blogId: string = "") {
-    return this._blogsApi.getBlogById(blogId);
+  public getCategoryById(blogId: string = "") {
+    const blogDocRef = doc(this._fs, "blogs", blogId);
+    return this._blogsApi
+      .getBlogById(blogDocRef)
+      .pipe(map((res) => ({...res.data(),id: res.id}) as Blog));
   }
 
-  public createBlog(blog: BlogCreate) {
-    return this._blogsApi.createBlog(blog);
+  public createBlog(
+    blog: BlogCreate & { thumbnails: NzUploadFile[]; content: string }
+  ) {
+    const { thumbnails, content, ...body } = blog;
+    return this._blogsApi.createBlog(body).pipe(
+      mergeMap((res) => {
+        return combineLatest({
+          blog: of(res),
+          thumbnailFile: this._storageApi.uploadImage(
+            blog.thumbnails[0] as any,
+            "thumbnail.jpeg",
+            res.id
+          ),
+          contentFile: this._storageApi.uploadMarkdown(
+            blog.content,
+            "content.md",
+            res.id
+          ),
+        });
+      }),
+      mergeMap(({ blog, thumbnailFile, contentFile }) => {
+        return this.updateBlog(blog.id, {
+          thumbnailFileId: thumbnailFile.metadata.name,
+          contentFileId: contentFile.metadata.name,
+        });
+      }),
+      tap(() => {
+        this._msg.success("Thêm mới blog thành công!");
+        this.back();
+      })
+    );
   }
 
   public updateBlog(blogId: string = "", blog: BlogUpdate) {
@@ -36,5 +79,19 @@ export class BlogsFacadeService {
 
   public getCategories() {
     return this._categoriesApi.getCategories().pipe(take(1));
+  }
+
+  public mapBlogToForm(blog: Blog, form: FormGroup) {
+    this._storageApi
+      .getFileById(blog.thumbnailFileId, blog.id)
+      .subscribe((res) => {
+        // const file = URL.createObjectURL(res);
+        const file = new File([res], "thumbnail.jpeg");
+        form.patchValue({ thumbnails: [file], ...blog });
+      });
+  }
+
+  public back() {
+    this._location.back();
   }
 }

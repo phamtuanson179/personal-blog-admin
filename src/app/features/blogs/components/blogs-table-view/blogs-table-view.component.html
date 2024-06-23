@@ -20,6 +20,16 @@
           <td>{{ blog.updateTime | date: "hh:mm:ss dd/MM/yyyy" }}</td>
           <td>
             <div class="flex gap-2">
+              <a [routerLink]="['update', blog.id]">
+                <button
+                  nz-button
+                  class="bg-warning text-white rounded hover:bg-warning-light hover:text-white hover:border-none"
+                  [nzType]="null"
+                >
+                  <span nz-icon nzType="edit" nzTheme="outline"></span>
+                </button>
+              </a>
+
               <!-- <app-blogs-update
                 [updatedElm]="blog"
               ></app-blogs-update>

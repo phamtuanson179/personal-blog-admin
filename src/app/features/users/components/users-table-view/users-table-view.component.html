@@ -1,1 +1,47 @@
-<p>users-table-view works!</p>
+<nz-card nzTitle="Quản lý danh mục" [nzExtra]="extraRef">
+  <nz-table #tableRef [nzData]="users_() ?? []">
+    <thead>
+      <tr>
+        <th id="name">Tên người dùng</th>
+        <th id="description">Giới tính</th>
+        <th id="order">Ngày sinh</th>
+        <th id="order">Ảnh đại diện</th>
+        <th id="order">Mã đăng nhập</th>
+        <th id="order">Mô tả</th>
+        <th id="action"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of tableRef.data; track $index) {
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category?.sex }}</td>
+          <td>{{ category?.dob }}</td>
+          <td>
+            @if (category?.avatarFileId) {
+              <img
+                nz-image
+                width="24px"
+                height="24px"
+                [nzSrc]="category.avatarFileId!"
+                alt=""
+              />
+            }
+          </td>
+          <td>{{ category.authUid }}</td>
+          <td>{{ category?.description }}</td>
+          <td>
+            <div class="flex gap-2">
+              <!-- <app-users-update [updatedElm]="category"></app-users-update>
+
+              <app-users-delete [delElm]="category"></app-users-delete> -->
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #extraRef>
+</ng-template>

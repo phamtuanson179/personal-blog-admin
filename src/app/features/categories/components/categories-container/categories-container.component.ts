@@ -4,6 +4,7 @@ import { CategoriesTableViewComponent } from "../categories-table-view/categorie
 import { CategoriesApiService } from "src/app/apis/categories-api.service";
 import { map } from "rxjs";
 import { CommonModule } from "@angular/common";
+import { CategoriesFacadeService } from "@categories/services/categories-facade.service";
 
 @Component({
   selector: "app-categories-container",
@@ -17,8 +18,8 @@ import { CommonModule } from "@angular/common";
   styleUrl: "./categories-container.component.scss",
 })
 export class CategoriesContainerComponent {
-  private _category = inject(CategoriesApiService);
-  categories$ = this._category
+  private _categoriesFacade = inject(CategoriesFacadeService);
+  categories$ = this._categoriesFacade
     .getCategories()
     .pipe(map((res) => structuredClone(res)));
 }

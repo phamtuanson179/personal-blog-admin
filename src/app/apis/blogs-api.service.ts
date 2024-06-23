@@ -6,6 +6,8 @@ import {
   deleteDoc,
   DocumentReference,
   Firestore,
+  getDoc,
+  getDocs,
   updateDoc,
 } from "@angular/fire/firestore";
 import { BlogCreate } from "@blogs/interfaces/blog-create.interface";
@@ -18,17 +20,11 @@ export class BlogsApiService {
   private _blogsCollection = collection(this._fireStore, "blogs");
 
   getBlogs(): Observable<any> {
-    return collectionData(this._blogsCollection, { idField: "id" }).pipe(
-      tap((res) => {
-        console.log("blogs", res);
-      })
-    );
+    return collectionData(this._blogsCollection, { idField: "id" });
   }
 
-  getBlogById(blogId: string) {
-    return collectionData(this._blogsCollection, {
-      idField: blogId,
-    });
+  getBlogById(doc: DocumentReference) {
+    return from(getDoc(doc));
   }
 
   createBlog(body: BlogCreate) {

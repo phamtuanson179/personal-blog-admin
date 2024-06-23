@@ -13,7 +13,7 @@ export class UsersFacadeService {
     return this._usersApi.getUsers();
   }
 
-  public getCategryById(userId: string = "") {
+  public getUserById(userId: string = "") {
     return this._usersApi.getUserById(userId);
   }
 

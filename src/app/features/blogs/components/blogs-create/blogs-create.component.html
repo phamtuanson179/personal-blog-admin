@@ -1,10 +1,11 @@
-<nz-card nzTitle="Thêm mới blog">
-  <form
-    nz-form
-    [formGroup]="form"
-    id="blogForm"
-    (ngSubmit)="create()"
-  >
+<ng-template #nzTitle>
+  <div class="flex gap-4">
+    <span nz-icon nzType="arrow-left" nzTheme="outline" (click)="back()"></span>
+    <span>Thêm mới blog</span>
+  </div>
+</ng-template>
+<nz-card [nzTitle]="nzTitle">
+  <form nz-form [formGroup]="form" id="blogForm" (ngSubmit)="create()">
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">
         Tiêu đề
@@ -64,7 +65,7 @@
           [nzFileList]="form.controls['thumbnails'].value"
           class="flex items-center gap-4"
         >
-          <button nz-button class="btn btn-info">
+          <button nz-button claØss="btn btn-info" type="button">
             <span nz-icon nzType="upload"></span>
             Tải ảnh
           </button>
@@ -83,13 +84,22 @@
         <span>Nội dung</span>
       </nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-        <ckeditor id="editor" [editor]="editor" formControlName="content"></ckeditor>
+        <ckeditor
+          id="editor"
+          [editor]="editor"
+          formControlName="content"
+        ></ckeditor>
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item nz-row class="register-area">
       <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button type="submit" form="blogForm" class="btn btn-primary">
+        <button
+          type="submit"
+          [disabled]="form.invalid"
+          form="blogForm"
+          class="btn btn-primary"
+        >
           Lưu
         </button>
       </nz-form-control>

@@ -3,6 +3,7 @@ import {
   Auth,
   UserCredential,
   createUserWithEmailAndPassword,
+  getAdditionalUserInfo,
 } from "@angular/fire/auth";
 import {
   FormBuilder,
@@ -41,10 +42,13 @@ export class RegisterFormComponent {
     from(createUserWithEmailAndPassword(this._auth, body.email, body.password))
       .pipe(
         switchMap((res: UserCredential) => {
-          console.log(res);
-          
-          return res.operationType == "signIn"
-            ? this._usersFacade.createUser({ authUid: res.user.uid })
+          return getAdditionalUserInfo(res)?.isNewUser
+            ? this._usersFacade.createUser({
+                authUid: res.user.uid,
+                avatarFileId: res.user.photoURL ?? "",
+                name: res.user.displayName ?? "",
+                email: res.user.email ?? "",
+              })
             : of(null);
         })
       )

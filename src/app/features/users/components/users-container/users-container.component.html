@@ -1,1 +1,13 @@
-<p>users-container works!</p>
+<section>
+  <div class="flex flex-col gap-4">
+    <!-- <div>
+      <app-categories-filter></app-categories-filter>
+    </div> -->
+
+    <div>
+      <app-users-table-view
+        [users]="users$ | async"
+      ></app-users-table-view>
+    </div>
+  </div>
+</section>

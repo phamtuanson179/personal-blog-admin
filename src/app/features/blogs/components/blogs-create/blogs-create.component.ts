@@ -1,11 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FirebaseApp } from "@angular/fire/app";
 import {
   getStorage,
   ref,
   uploadBytes,
-  uploadString
+  uploadString,
 } from "@angular/fire/storage";
 import {
   FormBuilder,
@@ -48,12 +48,14 @@ import { combineLatest, from, mergeMap, of } from "rxjs";
   templateUrl: "./blogs-create.component.html",
   styleUrl: "./blogs-create.component.scss",
 })
-export class BlogsCreateComponent implements AfterViewInit {
+export class BlogsCreateComponent {
   private _fb = inject(FormBuilder);
   private _blogsFacade = inject(BlogsFacadeService);
   private _msg = inject(NzMessageService);
   private _fs = inject(FirebaseApp);
   private _authService = inject(AuthService);
+  public categories$ = this._blogsFacade.getCategories();
+
   loading = false;
   form = this._fb.group({
     title: this._fb.nonNullable.control("", [Validators.required]),
@@ -62,13 +64,9 @@ export class BlogsCreateComponent implements AfterViewInit {
       [],
       [Validators.required]
     ),
-    thumbnailFileId: this._fb.nonNullable.control<string>("", [
-      Validators.required,
-    ]),
-    contentFileId: this._fb.nonNullable.control("", [Validators.required]),
     content: this._fb.nonNullable.control("", [Validators.required]),
     categoryIds: this._fb.nonNullable.control([], [Validators.required]),
-    tags: this._fb.nonNullable.control<string[]>([], [Validators.required]),
+    tags: this._fb.nonNullable.control<string[]>([]),
   });
   public editor?: {
     create(
@@ -76,57 +74,20 @@ export class BlogsCreateComponent implements AfterViewInit {
       config?: EditorConfig
     ): Promise<Editor>;
   } = ClassicEditor;
-  public categories$ = this._blogsFacade.getCategories();
-
-  ngAfterViewInit(): void {
-    // this.editor = {
-    //   create: () =>
-    //     ClassicEditor.create(document.querySelector("#editor") as HTMLElement, {
-    //       plugins: [Markdown],
-    //     }),
-    // };
-  }
 
   create() {
     const currentUserUid = this._authService.getCurrentUserUid() ?? "";
     const nowTimestamp = new Date().getTime();
 
-    const { thumbnails, content, ...otherData } = this.form.getRawValue();
-
-    const body: BlogCreate = {
-      ...otherData,
+    const body: BlogCreate & { thumbnails: NzUploadFile[]; content: string } = {
+      ...this.form.getRawValue(),
       createdBy: currentUserUid,
       updatedBy: currentUserUid,
       createTime: nowTimestamp,
       updateTime: nowTimestamp,
     };
 
-    this._blogsFacade
-      .createBlog(body)
-      .pipe(
-        mergeMap((res) => {
-          const storage = getStorage(this._fs);
-          const thumbnailRef = ref(storage, `${res.id}/thumbnail.jpeg`);
-          const contentRef = ref(storage, `${res.id}/content.md`);
-
-          return combineLatest({
-            blog: of(res),
-            thumbnailFileId: from(
-              uploadBytes(thumbnailRef, this.form.value.thumbnails![0] as any)
-            ),
-            contentFileId: from(
-              uploadString(contentRef, this.form.value.content!)
-            ),
-          });
-        }),
-        mergeMap(({ blog, thumbnailFileId, contentFileId }) => {
-          return this._blogsFacade.updateBlog(blog.id, {
-            thumbnailFileId: "thumbnail.jpeg",
-            contentFileId: "content.md",
-          });
-        })
-      )
-      .subscribe();
+    this._blogsFacade.createBlog(body).subscribe();
   }
 
   handleChangeThumbnail(info: { file: NzUploadFile }) {
@@ -151,4 +112,8 @@ export class BlogsCreateComponent implements AfterViewInit {
 
     return false;
   };
+
+  back() {
+    this._blogsFacade.back();
+  }
 }

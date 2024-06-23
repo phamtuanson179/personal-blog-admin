@@ -79,6 +79,18 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: "users",
+        children: [
+          {
+            path: "",
+            loadComponent: () =>
+              import(
+                "./pages/page-users-container/page-users-container.component"
+              ).then((c) => c.PageUsersContainerComponent),
+          },
+        ],
+      },
     ],
   },
 ];
