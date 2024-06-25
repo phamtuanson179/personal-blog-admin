@@ -31,7 +31,7 @@ export class BlogsFacadeService {
     const blogDocRef = doc(this._fs, "blogs", blogId);
     return this._blogsApi
       .getBlogById(blogDocRef)
-      .pipe(map((res) => ({...res.data(),id: res.id}) as Blog));
+      .pipe(map((res) => ({ ...res.data(), id: res.id }) as Blog));
   }
 
   public createBlog(
@@ -82,16 +82,38 @@ export class BlogsFacadeService {
   }
 
   public mapBlogToForm(blog: Blog, form: FormGroup) {
-    this._storageApi
-      .getFileById(blog.thumbnailFileId, blog.id)
-      .subscribe((res) => {
-        // const file = URL.createObjectURL(res);
-        const file = new File([res], "thumbnail.jpeg");
-        form.patchValue({ thumbnails: [file], ...blog });
-      });
+    combineLatest({
+      thumbnailFile: this._getThumbnailFile(blog.thumbnailFileId, blog.id),
+      contentFile: this._getContentFile(blog.contentFileId, blog.id),
+    }).subscribe(({ thumbnailFile, contentFile }) => {
+      console.log(contentFile);
+
+      form.patchValue({ thumbnails: [thumbnailFile], ...blog });
+    });
   }
 
   public back() {
     this._location.back();
+  }
+
+  private _getThumbnailFile(thumbnailFileId: string = "", blogId: string) {
+    return this._storageApi.getFileById(thumbnailFileId, blogId).pipe(
+      map((blob) => {
+        const thumnailFile = new File([blob], "thumbnail.jpeg");
+        return thumnailFile;
+      })
+    );
+  }
+
+  private _getContentFile(contentFileId: string = "", blogId: string) {
+    return this._storageApi.getFileById(contentFileId, blogId).pipe(
+      map((blob) => {
+        console.log(blob);
+        
+        const contentFile = new File([blob], "content.md");
+        console.log(contentFile);
+        return contentFile;
+      })
+    );
   }
 }

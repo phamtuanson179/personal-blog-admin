@@ -1,12 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { FirebaseApp } from "@angular/fire/app";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadString,
-} from "@angular/fire/storage";
+import { AfterViewInit, Component, inject } from "@angular/core";
 import {
   FormBuilder,
   FormsModule,
@@ -17,7 +10,13 @@ import { BlogCreate } from "@blogs/interfaces/blog-create.interface";
 import { BlogsFacadeService } from "@blogs/services/blogs-facade.service";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Editor, EditorConfig } from "@ckeditor/ckeditor5-core";
+import {
+  Image,
+  ImageCaption,
+  ImageResize,
+  ImageStyle,
+  ImageToolbar,
+} from "@ckeditor/ckeditor5-image";
 import { AuthService } from "@shared-services/auth.service";
 import { NzCardModule } from "ng-zorro-antd/card";
 import { NzFormModule } from "ng-zorro-antd/form";
@@ -27,7 +26,6 @@ import { NzMessageService } from "ng-zorro-antd/message";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzTagModule } from "ng-zorro-antd/tag";
 import { NzUploadFile, NzUploadModule } from "ng-zorro-antd/upload";
-import { combineLatest, from, mergeMap, of } from "rxjs";
 
 @Component({
   selector: "app-blogs-create",
@@ -48,11 +46,10 @@ import { combineLatest, from, mergeMap, of } from "rxjs";
   templateUrl: "./blogs-create.component.html",
   styleUrl: "./blogs-create.component.scss",
 })
-export class BlogsCreateComponent {
+export class BlogsCreateComponent implements AfterViewInit {
   private _fb = inject(FormBuilder);
   private _blogsFacade = inject(BlogsFacadeService);
   private _msg = inject(NzMessageService);
-  private _fs = inject(FirebaseApp);
   private _authService = inject(AuthService);
   public categories$ = this._blogsFacade.getCategories();
 
@@ -68,12 +65,13 @@ export class BlogsCreateComponent {
     categoryIds: this._fb.nonNullable.control([], [Validators.required]),
     tags: this._fb.nonNullable.control<string[]>([]),
   });
-  public editor?: {
-    create(
-      sourceElementOrData: HTMLElement | string,
-      config?: EditorConfig
-    ): Promise<Editor>;
-  } = ClassicEditor;
+
+  ngAfterViewInit(): void {
+    ClassicEditor.create(document.querySelector("#editor") as HTMLElement, {
+      plugins: [ImageToolbar, ImageCaption, ImageStyle, ImageResize, Image],
+      toolbar: ["insertImage" /* ... */],
+    });
+  }
 
   create() {
     const currentUserUid = this._authService.getCurrentUserUid() ?? "";
