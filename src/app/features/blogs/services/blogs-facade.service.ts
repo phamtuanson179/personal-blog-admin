@@ -8,7 +8,16 @@ import { BlogUpdate } from "@blogs/interfaces/blog-update.interface";
 import { Blog } from "@blogs/interfaces/blog.interface";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { NzUploadFile } from "ng-zorro-antd/upload";
-import { combineLatest, map, mergeMap, of, take, tap } from "rxjs";
+import {
+  combineLatest,
+  from,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  tap,
+} from "rxjs";
 import { BlogsApiService } from "src/app/apis/blogs-api.service";
 import { CategoriesApiService } from "src/app/apis/categories-api.service";
 import { StorageApiService } from "src/app/apis/storage-api.service";
@@ -83,12 +92,10 @@ export class BlogsFacadeService {
 
   public mapBlogToForm(blog: Blog, form: FormGroup) {
     combineLatest({
-      thumbnailFile: this._getThumbnailFile(blog.thumbnailFileId, blog.id),
-      contentFile: this._getContentFile(blog.contentFileId, blog.id),
-    }).subscribe(({ thumbnailFile, contentFile }) => {
-      console.log(contentFile);
-
-      form.patchValue({ thumbnails: [thumbnailFile], ...blog });
+      thumbnail: this._getThumbnailFile(blog.thumbnailFileId, blog.id),
+      content: this._getContentFile(blog.contentFileId, blog.id),
+    }).subscribe(({ thumbnail, content }) => {
+      form.patchValue({ thumbnails: [thumbnail], ...blog, content });
     });
   }
 
@@ -99,21 +106,22 @@ export class BlogsFacadeService {
   private _getThumbnailFile(thumbnailFileId: string = "", blogId: string) {
     return this._storageApi.getFileById(thumbnailFileId, blogId).pipe(
       map((blob) => {
-        const thumnailFile = new File([blob], "thumbnail.jpeg");
-        return thumnailFile;
+        const thumbnailFile = new File([blob], "thumbnail.jpeg");
+        return thumbnailFile;
       })
     );
   }
 
   private _getContentFile(contentFileId: string = "", blogId: string) {
     return this._storageApi.getFileById(contentFileId, blogId).pipe(
-      map((blob) => {
-        console.log(blob);
-        
-        const contentFile = new File([blob], "content.md");
-        console.log(contentFile);
-        return contentFile;
+      switchMap((blob) => {
+        return this._blobToString(blob);
       })
     );
+  }
+
+  private _blobToString(blob: Blob) {
+    let url = URL.createObjectURL(blob);
+    return from(fetch(url).then((res) => res.text()));
   }
 }

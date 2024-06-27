@@ -13,8 +13,8 @@ export class StorageApiService {
   private _storage = inject(Storage);
 
   getFileById(fileId: string = "", folder?: string) {
-    const imageRef = ref(this._storage, folder);
-    return from(getBlob(ref(imageRef, fileId)));
+    const url = [folder, fileId]?.filter((i) => !!i).join("/");
+    return from(getBlob(ref(this._storage, url)));
   }
 
   uploadImage(file: File, fileId: string, folder?: string) {

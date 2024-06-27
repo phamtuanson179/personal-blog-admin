@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, inject } from "@angular/core";
+import { AfterViewInit, Component, inject, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormsModule,
@@ -46,7 +46,7 @@ import { NzUploadFile, NzUploadModule } from "ng-zorro-antd/upload";
   templateUrl: "./blogs-create.component.html",
   styleUrl: "./blogs-create.component.scss",
 })
-export class BlogsCreateComponent implements AfterViewInit {
+export class BlogsCreateComponent implements AfterViewInit, OnInit {
   private _fb = inject(FormBuilder);
   private _blogsFacade = inject(BlogsFacadeService);
   private _msg = inject(NzMessageService);
@@ -66,12 +66,33 @@ export class BlogsCreateComponent implements AfterViewInit {
     tags: this._fb.nonNullable.control<string[]>([]),
   });
 
+  public Editor = ClassicEditor;
+    public config = {
+        toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
+        // plugins: [
+        //     Bold, Essentials, Italic, Mention, Paragraph, SlashCommand, Undo
+        // ],
+        licenseKey: '<YOUR_LICENSE_KEY>',
+        mention: {
+            // Mention configuration
+        }
+    }
+
   ngAfterViewInit(): void {
     ClassicEditor.create(document.querySelector("#editor") as HTMLElement, {
-      plugins: [ImageToolbar, ImageCaption, ImageStyle, ImageResize, Image],
+      plugins: [Image, ImageToolbar, ImageCaption, ImageStyle, ImageResize],
       toolbar: ["insertImage" /* ... */],
+      image: {
+        insert: {
+            // This is the default configuration, you do not need to provide
+            // this configuration key if the list content and order reflects your needs.
+            integrations: [ 'upload', 'assetManager', 'url' ]
+        }
+    }
     });
   }
+
+  ngOnInit(): void {}
 
   create() {
     const currentUserUid = this._authService.getCurrentUserUid() ?? "";
